@@ -5,16 +5,6 @@
 
 #import "OneDollarRecognizer.h"
 
-
-const NSUInteger kNumPoints = 64;
-
-const double kAngleRange = 45.0 / 180 * M_PI;
-
-const double kAnglePrecision = 2.0 / 180 * M_PI;
-
-const double kPhi = 1.61803399; // Golden Ratio
-
-
 @interface OneDollarRecognizer (private)
 
 - (NSArray *)resample: (NSArray *)points;
@@ -64,6 +54,7 @@ const double kPhi = 1.61803399; // Golden Ratio
 - (id) initWithTemplates: (NSDictionary *)templates
                andRegion: (CGRect) region {
     if ((self = [self init])) {
+        // TODO: Resample templates
         [_templates addEntriesFromDictionary: templates];
         _region = region;
     }
