@@ -24,7 +24,6 @@
 		1410C1C912E4C0B20002208E /* one-dollar-recognizer-tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "one-dollar-recognizer-tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1410C1CA12E4C0B20002208E /* one-dollar-recognizer-tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "one-dollar-recognizer-tests-Info.plist"; sourceTree = "<group>"; };
 		14DDA48812E4DD4600DDCEB4 /* libone_dollar_recognizer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libone_dollar_recognizer.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		14DDA48912E4DD5100DDCEB4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		14DDA48B12E4DD5B00DDCEB4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		14DDA48D12E4DE1F00DDCEB4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		AA747D9E0F9514B9006C5449 /* one_dollar_recognizer_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = one_dollar_recognizer_Prefix.pch; sourceTree = SOURCE_ROOT; };
@@ -64,7 +63,6 @@
 			children = (
 				14DDA48D12E4DE1F00DDCEB4 /* CoreGraphics.framework */,
 				14DDA48B12E4DD5B00DDCEB4 /* UIKit.framework */,
-				14DDA48912E4DD5100DDCEB4 /* UIKit.framework */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -339,7 +337,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -352,7 +350,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

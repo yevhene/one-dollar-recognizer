@@ -9,33 +9,33 @@
 
 - (NSArray *)resample: (NSArray *)points;
 
-- (double)indicativeAngle: (NSArray *)points;
+- (CGFloat)indicativeAngle: (NSArray *)points;
 
 - (NSArray *)rotatePoints: (NSArray *)points
-                  byAngle: (double)angle;
+                  byAngle: (CGFloat)angle;
 
 - (NSArray *)scale: (NSArray *)points;
 
 - (NSArray *)translate: (NSArray *)points;
 
-- (double)distanceAtBestAngleFromPoints: (NSArray *)points
-                               toPoints: (NSArray *)points;
+- (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points
+                                toPoints: (NSArray *)points;
 
-- (double) distanceFromPoints: (NSArray *)points
-                     toPoints: (NSArray *)points
-                    withAngle: angle;
+- (CGFloat) distanceFromPoints: (NSArray *)points
+                      toPoints: (NSArray *)points
+                     withAngle: angle;
 
 - (CGPoint) centroid: (NSArray *)points;
 
 - (CGRect) boundingBox: (NSArray *)points;
 
-- (double) pathDistanceBetween: (NSArray *)points1
-                           and: (NSArray *)points2;
+- (CGFloat) pathDistanceBetween: (NSArray *)points1
+                            and: (NSArray *)points2;
 
-- (double) pathLength: (NSArray *)points;
+- (CGFloat) pathLength: (NSArray *)points;
 
-- (double) distanceBetween: point1 
-                       and: point2;
+- (CGFloat) distanceBetween: (CGPoint) point1
+                        and: (CGPoint) point2;
 
 @end
 
@@ -94,37 +94,80 @@ const NSUInteger kPointsPerTemplateNumber = 5;
     NSDictionary *recognizeResult = [recognizer recognize: [self points]];
     STAssertNotNil(recognizeResult,
                    @"Recognize result should be not nil.");
+    // TODO
 }
 
 - (void) testResample {
     NSArray *points = [recognizer resample: [self points]];
-    STAssertTrue([points count] == kNumPoints,
-                 @"Should resample to %d points.", kNumPoints);
+    STAssertNotNil(points,
+                   @"Should not be nil.");
+    STAssertEquals([points count], kNumPoints,
+                   @"Should resample to %d points.", kNumPoints);
 }
 
 - (void) testIndicativeAngle {
-    double angle = [recognizer indicativeAngle: [self points]];
-    STAssertEqualsWithAccuracy(angle, M_PI / 4, 0.001,
+    CGFloat angle = [recognizer indicativeAngle: [self points]];
+    STAssertEqualsWithAccuracy(angle, (CGFloat)(M_PI / 4), 0.001,
                                @"Should be equal to 45 degrees.");
 }
 
 - (void) testRotatePoints {
     NSArray *points = [recognizer rotatePoints: [self points]
-                                       byAngle: M_PI / 4];
+                                       byAngle: -M_PI / 4];
     STAssertTrue([points count] == kPointsPerTemplateNumber,
                  @"Should return the same number of points as given.");
     for (int i = 0; i < [points count]; i++) {
         CGPoint point = [[points objectAtIndex: i] CGPointValue];
-        STAssertEqualsWithAccuracy(point.y, 0.0, 0.001,
+        STAssertEqualsWithAccuracy(point.y, (CGFloat)((kPointsPerTemplateNumber - 1) / 2.0), 0.001,
                                    @"All points should lie on X-axis.");
-        STAssertTrue(point.x >= 0,
-                     @"All points should have positive X coordinate");
         if (i > 0) {
             CGPoint lastPoint = [[points objectAtIndex: i - 1] CGPointValue];
             STAssertTrue(point.x > lastPoint.x,
                          @"Points should have growing X coordinate");
         }
     }
+}
+
+- (void) testCentroid {
+    CGPoint centroid = [recognizer centroid: [self points]];
+
+    STAssertEqualsWithAccuracy(centroid.x, (CGFloat)((kPointsPerTemplateNumber - 1) / 2.0), 0.001,
+                               @"Centroid x-coordinate should be in the middle of given points.");
+    STAssertEqualsWithAccuracy(centroid.y, (CGFloat)((kPointsPerTemplateNumber - 1) / 2.0), 0.001,
+                               @"Centroid y-coordinate should be in the middle of given points.");
+}
+
+- (void) testBoundingBox {
+    CGRect boundingBox = [recognizer boundingBox: [self points]];
+
+    STAssertEqualsWithAccuracy(boundingBox.origin.x, (CGFloat)0.0, 0.001,
+                               @"Origin x-coordinate should be minimum of given points.");
+    STAssertEqualsWithAccuracy(boundingBox.origin.y, (CGFloat)0.0, 0.001,
+                               @"Origin y-coordinate should be minimum of given points.");
+    STAssertEqualsWithAccuracy(CGRectGetMaxX(boundingBox), (CGFloat)(kPointsPerTemplateNumber - 1), 0.001,
+                               @"Max x should be maximum of given points.");
+    STAssertEqualsWithAccuracy(CGRectGetMaxY(boundingBox), (CGFloat)(kPointsPerTemplateNumber - 1), 0.001,
+                               @"Max y should be maximum of given points.");
+}
+
+- (void) testDistanceBetweenPoints {
+    CGFloat distance = [recognizer distanceBetween: CGPointMake(0.0, 0.0)
+                                              and: CGPointMake(1.0, 1.0)];
+    STAssertEqualsWithAccuracy(distance, (CGFloat)M_SQRT2, 0.001,
+                               @"Distance should be correct.");
+}
+
+- (void) testPathLength {
+    CGFloat pathLength = [recognizer pathLength: [self points]];
+    STAssertEqualsWithAccuracy(pathLength, (CGFloat)((kPointsPerTemplateNumber - 1) * M_SQRT2), 0.001,
+                               @"Path length should be sum of the distances between points.");
+}
+
+- (void) testPathDistanceBetweenPoints {
+    CGFloat pathDistance = [recognizer pathDistanceBetween: [self points]
+                                                      and: [self points]];
+    STAssertEqualsWithAccuracy(pathDistance, (CGFloat)0.0, 0.001,
+                               @"Distance between path and itself should be zero.");
 }
 
 @end
