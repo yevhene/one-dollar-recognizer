@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1410C19C12E4BA090002208E /* OneDollarRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1410C19A12E4BA090002208E /* OneDollarRecognizer.h */; };
+		1410C19D12E4BA090002208E /* OneDollarRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1410C19B12E4BA090002208E /* OneDollarRecognizer.m */; };
+		1410C1CE12E4C0CD0002208E /* OneDollarRecognizerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1410C1A412E4BEE10002208E /* OneDollarRecognizerTest.m */; };
+		1410C1E212E4C3F00002208E /* OneDollarRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1410C19B12E4BA090002208E /* OneDollarRecognizer.m */; };
+		14DDA48C12E4DD5B00DDCEB4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14DDA48B12E4DD5B00DDCEB4 /* UIKit.framework */; };
+		14DDA48E12E4DE1F00DDCEB4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14DDA48D12E4DE1F00DDCEB4 /* CoreGraphics.framework */; };
+		AA747D9F0F9514B9006C5449 /* one_dollar_recognizer_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* one_dollar_recognizer_Prefix.pch */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1410C19A12E4BA090002208E /* OneDollarRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneDollarRecognizer.h; sourceTree = "<group>"; };
+		1410C19B12E4BA090002208E /* OneDollarRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneDollarRecognizer.m; sourceTree = "<group>"; };
+		1410C1A312E4BEE10002208E /* OneDollarRecognizerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneDollarRecognizerTest.h; sourceTree = "<group>"; };
+		1410C1A412E4BEE10002208E /* OneDollarRecognizerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneDollarRecognizerTest.m; sourceTree = "<group>"; };
+		1410C1C912E4C0B20002208E /* one-dollar-recognizer-tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "one-dollar-recognizer-tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1410C1CA12E4C0B20002208E /* one-dollar-recognizer-tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "one-dollar-recognizer-tests-Info.plist"; sourceTree = "<group>"; };
+		14DDA48812E4DD4600DDCEB4 /* libone_dollar_recognizer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libone_dollar_recognizer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		14DDA48912E4DD5100DDCEB4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		14DDA48B12E4DD5B00DDCEB4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		14DDA48D12E4DE1F00DDCEB4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		AA747D9E0F9514B9006C5449 /* one_dollar_recognizer_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = one_dollar_recognizer_Prefix.pch; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1410C1C612E4C0B20002208E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14DDA48E12E4DE1F00DDCEB4 /* CoreGraphics.framework in Frameworks */,
+				14DDA48C12E4DD5B00DDCEB4 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2AAC07C0554694100DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1410C1C912E4C0B20002208E /* one-dollar-recognizer-tests.octest */,
+				14DDA48812E4DD4600DDCEB4 /* libone_dollar_recognizer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* one-dollar-recognizer */ = {
+			isa = PBXGroup;
+			children = (
+				14DDA48D12E4DE1F00DDCEB4 /* CoreGraphics.framework */,
+				14DDA48B12E4DD5B00DDCEB4 /* UIKit.framework */,
+				14DDA48912E4DD5100DDCEB4 /* UIKit.framework */,
+				08FB77AEFE84172EC02AAC07 /* Classes */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				1410C1A712E4BEEA0002208E /* Tests */,
+				1410C1CA12E4C0B20002208E /* one-dollar-recognizer-tests-Info.plist */,
+			);
+			name = "one-dollar-recognizer";
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				1410C19A12E4BA090002208E /* OneDollarRecognizer.h */,
+				1410C19B12E4BA090002208E /* OneDollarRecognizer.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1410C1A712E4BEEA0002208E /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				1410C1A312E4BEE10002208E /* OneDollarRecognizerTest.h */,
+				1410C1A412E4BEE10002208E /* OneDollarRecognizerTest.m */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				AA747D9E0F9514B9006C5449 /* one_dollar_recognizer_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC07A0554694100DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA747D9F0F9514B9006C5449 /* one_dollar_recognizer_Prefix.pch in Headers */,
+				1410C19C12E4BA090002208E /* OneDollarRecognizer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1410C1C812E4C0B20002208E /* one-dollar-recognizer-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1410C1CD12E4C0B20002208E /* Build configuration list for PBXNativeTarget "one-dollar-recognizer-tests" */;
+			buildPhases = (
+				1410C1C412E4C0B20002208E /* Resources */,
+				1410C1C512E4C0B20002208E /* Sources */,
+				1410C1C612E4C0B20002208E /* Frameworks */,
+				1410C1C712E4C0B20002208E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "one-dollar-recognizer-tests";
+			productName = "one-dollar-recognizer-tests";
+			productReference = 1410C1C912E4C0B20002208E /* one-dollar-recognizer-tests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		D2AAC07D0554694100DB518D /* one-dollar-recognizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "one-dollar-recognizer" */;
+			buildPhases = (
+				D2AAC07A0554694100DB518D /* Headers */,
+				D2AAC07B0554694100DB518D /* Sources */,
+				D2AAC07C0554694100DB518D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "one-dollar-recognizer";
+			productName = "one-dollar-recognizer";
+			productReference = 14DDA48812E4DD4600DDCEB4 /* libone_dollar_recognizer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "one-dollar-recognizer" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 0867D691FE84028FC02AAC07 /* one-dollar-recognizer */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC07D0554694100DB518D /* one-dollar-recognizer */,
+				1410C1C812E4C0B20002208E /* one-dollar-recognizer-tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1410C1C412E4C0B20002208E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1410C1C712E4C0B20002208E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1410C1C512E4C0B20002208E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1410C1CE12E4C0CD0002208E /* OneDollarRecognizerTest.m in Sources */,
+				1410C1E212E4C3F00002208E /* OneDollarRecognizer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2AAC07B0554694100DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1410C19D12E4BA090002208E /* OneDollarRecognizer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1410C1CB12E4C0B20002208E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "one-dollar-recognizer-tests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/Users/yevhene/work/one-dollar-recognizer/build/Debug-iphonesimulator\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					SenTestingKit,
+					"-framework",
+					UIKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "one-dollar-recognizer-tests";
+				SDKROOT = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		1410C1CC12E4C0B20002208E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "one-dollar-recognizer-tests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/Users/yevhene/work/one-dollar-recognizer/build/Debug-iphonesimulator\"",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					SenTestingKit,
+					"-framework",
+					UIKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "one-dollar-recognizer-tests";
+				SDKROOT = iphonesimulator;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		1DEB921F08733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/one_dollar_recognizer.dst;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = one_dollar_recognizer_Prefix.pch;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = one_dollar_recognizer;
+				SDKROOT = iphonesimulator;
+			};
+			name = Debug;
+		};
+		1DEB922008733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DSTROOT = /tmp/one_dollar_recognizer.dst;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = one_dollar_recognizer_Prefix.pch;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = one_dollar_recognizer;
+				SDKROOT = iphonesimulator;
+			};
+			name = Release;
+		};
+		1DEB922308733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				SDKROOT = iphoneos4.1;
+			};
+			name = Debug;
+		};
+		1DEB922408733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				SDKROOT = iphoneos4.1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1410C1CD12E4C0B20002208E /* Build configuration list for PBXNativeTarget "one-dollar-recognizer-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1410C1CB12E4C0B20002208E /* Debug */,
+				1410C1CC12E4C0B20002208E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "one-dollar-recognizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB921F08733DC00010E9CD /* Debug */,
+				1DEB922008733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "one-dollar-recognizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB922308733DC00010E9CD /* Debug */,
+				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
