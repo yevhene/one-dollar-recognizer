@@ -19,12 +19,12 @@
 
 - (NSArray *)translate: (NSArray *)points;
 
-- (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points
-                                toPoints: (NSArray *)points;
+- (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points1
+                                toPoints: (NSArray *)points2;
 
-- (CGFloat) distanceFromPoints: (NSArray *)points
-                      toPoints: (NSArray *)points
-                     withAngle: angle;
+- (CGFloat) distanceFromPoints: (NSArray *)points1
+                      toPoints: (NSArray *)points2
+                     withAngle: (CGFloat) angle;
 
 - (CGPoint) centroid: (NSArray *)points;
 
@@ -187,15 +187,15 @@
     return nil;
 }
 
-- (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points
-                               toPoints: (NSArray *)points {
+- (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points1
+                               toPoints: (NSArray *)points2 {
     // TODO
     return 0;
 }
 
-- (CGFloat) distanceFromPoints: (NSArray *)points
-                     toPoints: (NSArray *)points
-                    withAngle: angle {
+- (CGFloat) distanceFromPoints: (NSArray *)points1
+                     toPoints: (NSArray *)points2
+                    withAngle: (CGFloat) angle {
     // TODO
     return 0;
 }

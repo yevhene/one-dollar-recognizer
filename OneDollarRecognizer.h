@@ -19,7 +19,7 @@ static const double kPhi = 1.61803399; // Golden Ratio
 @private
     //<NSString *name, NSArray *points>
     NSMutableDictionary *_templates;
-    
+
     CGRect _region;
 }
 
