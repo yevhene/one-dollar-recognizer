@@ -183,8 +183,20 @@
 }
 
 - (NSArray *)translate: (NSArray *)points {
-    // TODO
-    return nil;
+    CGPoint newCenter = CGPointMake(CGRectGetMidX([self region]),
+                                    CGRectGetMidY([self region]));
+    CGPoint center = [self centroid: points];
+
+    NSMutableArray *newPoints = [NSMutableArray arrayWithCapacity: [points count]];
+    for (NSValue *value in points) {
+        CGPoint point = [value CGPointValue];
+        [newPoints addObject:
+         [NSValue valueWithCGPoint:
+          CGPointMake(point.x + newCenter.x - center.x,
+                      point.y + newCenter.y - center.y)]];
+    }
+
+    return newPoints;
 }
 
 - (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points1

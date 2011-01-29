@@ -173,6 +173,8 @@ const CGFloat kEps = 0.001;
 }
 
 - (void) testScaleTo {
+    recognizer.region = [self region];
+
     NSArray *scaledPoints = [recognizer scale: [self points]];
 
     STAssertEquals([scaledPoints count], kPointsPerTemplateNumber,
@@ -187,17 +189,19 @@ const CGFloat kEps = 0.001;
 }
 
 - (void) testTranslateTo {
-    NSArray *translatedPoints = [recognizer scale: [self points]];
+    recognizer.region = [self region];
+
+    NSArray *translatedPoints = [recognizer translate: [self points]];
 
     STAssertEquals([translatedPoints count], kPointsPerTemplateNumber,
                    @"Should return the same number of points as given.");
 
-    CGRect boundingBox = [recognizer boundingBox: translatedPoints];
+    CGPoint center = [recognizer centroid: translatedPoints];
 
-    STAssertEqualsWithAccuracy(boundingBox.origin.x, [self region].origin.x, kEps,
-                               @"Bounding box of new points should be translated to origin of region");
-    STAssertEqualsWithAccuracy(boundingBox.origin.y, [self region].origin.y, kEps,
-                               @"Bounding box of new points should be translated to origin of region");
+    STAssertEqualsWithAccuracy(center.x, CGRectGetMidX([self region]), kEps,
+                               @"Centroid of new points should be translated to center of region");
+    STAssertEqualsWithAccuracy(center.y, CGRectGetMidY([self region]), kEps,
+                               @"Centroid of new points should be translated to center of region");
 }
 
 - (void) testDistanceAtBestAngleSamePoints {
