@@ -23,7 +23,7 @@
                                 toPoints: (NSArray *)points2;
 
 - (CGFloat) distanceFromPoints: (NSArray *)points1
-                      toPoints: (NSArray *)points2
+              toTemplatePoints: (NSArray *)points2
                      withAngle: (CGFloat) angle;
 
 - (CGPoint) centroid: (NSArray *)points;
@@ -214,15 +214,51 @@
 
 - (CGFloat)distanceAtBestAngleFromPoints: (NSArray *)points1
                                toPoints: (NSArray *)points2 {
-    // TODO
-    return 0;
+    // TODO: Maybe refactor golden section search into universal function
+
+    CGFloat startAngle = -kAngleRange;
+    CGFloat endAngle = kAngleRange;
+
+    // Compute first approximation
+    CGFloat angle1 = kPhi * startAngle + (1.0 - kPhi) * endAngle;
+    CGFloat angle2 = (1.0 - kPhi) * startAngle + kPhi * endAngle;
+    CGFloat distance1 = [self distanceFromPoints: points1
+                                toTemplatePoints: points2
+                                       withAngle: angle1];
+    CGFloat distance2 = [self distanceFromPoints: points1
+                                toTemplatePoints: points2
+                                       withAngle: angle2];
+
+    // Iterate to improve results (using golden section search)
+    while (fabs(endAngle - startAngle) > kAnglePrecision) {
+        if (distance1 < distance2) {
+            endAngle = angle2;
+            angle2 = angle1;
+            distance2 = distance1;
+            angle1 = kPhi * startAngle + (1.0 - kPhi) * endAngle;
+            distance1 =  [self distanceFromPoints: points1
+                                 toTemplatePoints: points2
+                                        withAngle: angle1];
+        } else {
+            startAngle = angle1;
+            angle1 = angle2;
+            distance1 = distance2;
+            angle2 = (1.0 - kPhi) * startAngle + kPhi * endAngle;
+            distance2 = [self distanceFromPoints: points1
+                                toTemplatePoints: points2
+                                       withAngle: angle2];
+        }
+    }
+
+    return fmin(distance1, distance2);
 }
 
 - (CGFloat) distanceFromPoints: (NSArray *)points1
-                     toPoints: (NSArray *)points2
-                    withAngle: (CGFloat) angle {
-    // TODO
-    return 0;
+              toTemplatePoints: (NSArray *)points2
+                     withAngle: (CGFloat) angle {
+
+    NSArray *newPoints = [self rotatePoints: points1 byAngle: angle];
+    return [self pathDistanceBetween: newPoints and: points2];
 }
 
 - (CGPoint) centroid: (NSArray *)points {

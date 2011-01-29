@@ -12,7 +12,7 @@ static const double kAngleRange = 45.0 / 180 * M_PI;
 
 static const double kAnglePrecision = 2.0 / 180 * M_PI;
 
-static const double kPhi = 1.61803399; // Golden Ratio
+static const double kPhi = 0.61803399; // Golden Ratio
 
 
 @interface OneDollarRecognizer : NSObject {

@@ -22,7 +22,7 @@
                                 toPoints: (NSArray *)points2;
 
 - (CGFloat) distanceFromPoints: (NSArray *)points1
-                      toPoints: (NSArray *)points2
+              toTemplatePoints: (NSArray *)points2
                      withAngle: (CGFloat) angle;
 
 - (CGPoint) centroid: (NSArray *)points;
@@ -207,7 +207,8 @@ const CGFloat kEps = 0.001;
 - (void) testDistanceAtBestAngleSamePoints {
     CGFloat distance = [recognizer distanceAtBestAngleFromPoints: [self points]
                                                         toPoints: [self points]];
-    STAssertEqualsWithAccuracy(distance, (CGFloat) 0.0, kEps,
+    // Note that smaller epsilon used here, because of high kAnglePrecision value
+    STAssertEqualsWithAccuracy(distance, (CGFloat) 0.0, 0.05,
                                @"Distance between path and itself should be zero.");
 }
 
@@ -224,13 +225,13 @@ const CGFloat kEps = 0.001;
 
     CGFloat distance = [recognizer distanceAtBestAngleFromPoints: [self points]
                                                         toPoints: translatedPoints];
-    STAssertEqualsWithAccuracy(distance, (CGFloat) 1.0, kEps,
-                               @"Distance between path and translated one should be 1.0");
+    STAssertEqualsWithAccuracy(distance, (CGFloat) 1.0 * kPointsPerTemplateNumber, kEps,
+                               @"Distance between path and translated one should be 1.0 multiplied by number of points");
 }
 
 - (void) testDistanceWithAngleSamePoints {
     CGFloat distance = [recognizer distanceFromPoints: [self points]
-                                             toPoints: [self points]
+                                     toTemplatePoints: [self points]
                                             withAngle: 0.0];
     STAssertEqualsWithAccuracy(distance, (CGFloat) 0.0, kEps,
                                @"Distance between path and itself should be zero.");
@@ -238,11 +239,11 @@ const CGFloat kEps = 0.001;
 
 - (void) testDistanceWithAngleSamePointsNonZeroAngle {
     CGFloat distance = [recognizer distanceFromPoints: [self points]
-                                             toPoints: [self points]
-                                            withAngle: M_PI];
-    // Following assumes sin(PI/2) = 1
-    CGFloat expectedDistance = (kPointsPerTemplateNumber * (kPointsPerTemplateNumber + 1)) / 2;
-    STAssertEqualsWithAccuracy(distance, expectedDistance, kEps,
+                                     toTemplatePoints: [self points]
+                                            withAngle: M_PI / 2];
+    // Following assumes sin(PI/4) = sqrt(1/2), i.e. the same as distance between two test points
+    CGFloat expectedDistance = (kPointsPerTemplateNumber / 2 * (kPointsPerTemplateNumber / 2 + 1)) * 2;
+    STAssertEqualsWithAccuracy(expectedDistance, distance, kEps,
                                @"Distance between path and itself at given angle should be as calculated");
 }
 
