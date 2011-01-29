@@ -178,8 +178,21 @@
 }
 
 - (NSArray *)scale: (NSArray *)points {
-    // TODO
-    return nil;
+    CGRect boundingBox = [self boundingBox: points];
+
+    CGFloat scaleX = _region.size.width / boundingBox.size.width;
+    CGFloat scaleY = _region.size.height / boundingBox.size.height;
+
+    NSMutableArray *newPoints = [NSMutableArray arrayWithCapacity: [points count]];
+    for (NSValue *value in points) {
+        CGPoint point = [value CGPointValue];
+        [newPoints addObject:
+         [NSValue valueWithCGPoint:
+          CGPointMake(point.x * scaleX,
+                      point.y * scaleY)]];
+    }
+
+    return newPoints;
 }
 
 - (NSArray *)translate: (NSArray *)points {
