@@ -81,21 +81,105 @@ const CGFloat kEps = 0.001;
     STAssertNotNil(recognizer.templates,
                    @"Should create templates dictionary.");
     STAssertTrue([recognizer.templates count] == 0,
-                 @"Templates dictionary should be empty.");
+                 @"Should have empty templates dictionary.");
+}
+
+- (void) assertResampled: (NSArray *) points {
+    STAssertEquals(kNumPoints, [points count],
+                   @"Should resample to %d points.", kNumPoints);
+}
+
+- (void) assertScaled: (NSArray *) scaledPoints {
+    CGRect boundingBox = [recognizer boundingBox: scaledPoints];
+
+    if (boundingBox.size.width > boundingBox.size.height) {
+        STAssertEqualsWithAccuracy(boundingBox.size.width, [self region].size.width, kEps,
+                                   @"Bounding box of new points should be scaled to whole region");
+    } else {
+        STAssertEqualsWithAccuracy(boundingBox.size.height, [self region].size.height, kEps,
+                                   @"Bounding box of new points should be scaled to whole region");
+    }
+}
+
+- (void) assertTranslated: (NSArray *) translatedPoints {
+    CGPoint center = [recognizer centroid: translatedPoints];
+
+    STAssertEqualsWithAccuracy(center.x, CGRectGetMidX([self region]), kEps,
+                               @"Centroid of new points should be translated to center of region");
+    STAssertEqualsWithAccuracy(center.y, CGRectGetMidY([self region]), kEps,
+                               @"Centroid of new points should be translated to center of region");
+}
+
+- (void) assertRotated: (NSArray *) points {
+    for (int i = 0; i < [points count]; i++) {
+        CGPoint point = [[points objectAtIndex: i] CGPointValue];
+
+        if (i > 0) {
+            CGPoint lastPoint = [[points objectAtIndex: i - 1] CGPointValue];
+            STAssertEqualsWithAccuracy(point.y, lastPoint.y, kEps,
+                                       @"Should be parallel to X-axis.");
+            STAssertTrue(point.x > lastPoint.x,
+                         @"Should have each next point (%@) with bigger X-coordinate than previous (%@)",
+                         NSStringFromCGPoint(point), NSStringFromCGPoint(lastPoint));
+        }
+    }
+}
+
+- (void) assertTransformedTemplate: (NSArray *) points {
+    [self assertResampled: points];
+    [self assertRotated: points];
+    [self assertScaled: points];
+    [self assertTranslated: points];
 }
 
 - (void) testInitWithTemplates {
     [recognizer release];
     recognizer = [[OneDollarRecognizer alloc] initWithTemplates: [self templates]
                                                       andRegion: [self region]];
-    STAssertTrue([recognizer.templates count] == kTemplatesNumber,
-                 @"Templates dictionary should be %d.", kTemplatesNumber);
+    STAssertEquals(kTemplatesNumber, [recognizer.templates count],
+                 @"Should have templates dictionary of expected size");
+
+    for (NSArray *template in [recognizer.templates allValues]) {
+    	[self assertTransformedTemplate: template];
+    }
+}
+
+- (void) testAddSingleTemplate {
+    recognizer.region = [self region];
+    [recognizer addTemplateWithName: @"testTemplate" andPoints: [self points]];
+
+    STAssertEquals(1u, [recognizer.templates count],
+                   @"Should add one template");
+    STAssertEquals(@"testTemplate", [[recognizer.templates allKeys] objectAtIndex: 0],
+                   @"Should add template with given name");
+    [self assertTransformedTemplate: [[recognizer.templates allValues] objectAtIndex: 0]];
+}
+
+- (void) testAddMultipleTemplates {
+    recognizer.region = [self region];
+
+    NSDictionary *templates = [self templates];
+
+    for (NSString *templateName in [templates allKeys]) {
+    	[recognizer addTemplateWithName: templateName
+                              andPoints: [templates objectForKey: templateName]];
+    }
+
+    STAssertEquals([templates count], [recognizer.templates count],
+                   @"Should add the same number of templates as given");
+
+    for (NSString *templateName in [recognizer.templates allKeys]) {
+	NSArray *template = [recognizer.templates objectForKey: templateName];
+    	STAssertNotNil(template,
+                       @"Should have template '%@' in templates dictionary", templateName);
+    	[self assertTransformedTemplate: template];
+    }
 }
 
 - (void) testRecognize {
     NSDictionary *recognizeResult = [recognizer recognize: [self points]];
     STAssertNotNil(recognizeResult,
-                   @"Recognize result should be not nil.");
+                   @"Should return not nil recognition result.");
     // TODO
 }
 
@@ -103,8 +187,7 @@ const CGFloat kEps = 0.001;
     NSArray *points = [recognizer resample: [self points]];
     STAssertNotNil(points,
                    @"Should not be nil.");
-    STAssertEquals([points count], kNumPoints,
-                   @"Should resample to %d points.", kNumPoints);
+    [self assertResampled: points];
 }
 
 - (void) testIndicativeAngle {
@@ -116,18 +199,11 @@ const CGFloat kEps = 0.001;
 - (void) testRotatePoints {
     NSArray *points = [recognizer rotatePoints: [self points]
                                        byAngle: -M_PI / 4];
+
     STAssertTrue([points count] == kPointsPerTemplateNumber,
+
                  @"Should return the same number of points as given.");
-    for (int i = 0; i < [points count]; i++) {
-        CGPoint point = [[points objectAtIndex: i] CGPointValue];
-        STAssertEqualsWithAccuracy(point.y, (CGFloat)((kPointsPerTemplateNumber - 1) / 2.0), kEps,
-                                   @"All points should lie on X-axis.");
-        if (i > 0) {
-            CGPoint lastPoint = [[points objectAtIndex: i - 1] CGPointValue];
-            STAssertTrue(point.x > lastPoint.x,
-                         @"Points should have growing X coordinate");
-        }
-    }
+    [self assertRotated: points];
 }
 
 - (void) testCentroid {
@@ -139,17 +215,33 @@ const CGFloat kEps = 0.001;
                                @"Centroid y-coordinate should be in the middle of given points.");
 }
 
-- (void) testBoundingBox {
+- (void) testBoundingBoxSinglePoint {
+    CGPoint point = CGPointMake(1.0, 2.0);
+    CGRect boundingBox = [recognizer boundingBox:
+                          [NSArray arrayWithObject:
+                           [NSValue valueWithCGPoint: point]]];
+
+    STAssertEqualsWithAccuracy(boundingBox.origin.x, point.x, kEps,
+                               @"Should have origin x-coordinate be same as given point.");
+    STAssertEqualsWithAccuracy(boundingBox.origin.y, point.y, kEps,
+                               @"Should have origin y-coordinate be same as given point");
+    STAssertEqualsWithAccuracy(boundingBox.size.width, (CGFloat) 1.0, kEps,
+                               @"Should have width of one point.");
+    STAssertEqualsWithAccuracy(boundingBox.size.height, (CGFloat) 1.0, kEps,
+                               @"Should have height of one point.");
+}
+
+- (void) testBoundingBoxMultiplePoints {
     CGRect boundingBox = [recognizer boundingBox: [self points]];
 
     STAssertEqualsWithAccuracy(boundingBox.origin.x, (CGFloat)0.0, kEps,
-                               @"Origin x-coordinate should be minimum of given points.");
+                               @"Should have origin x-coordinate be minimum of given points.");
     STAssertEqualsWithAccuracy(boundingBox.origin.y, (CGFloat)0.0, kEps,
-                               @"Origin y-coordinate should be minimum of given points.");
+                               @"Should have origin y-coordinate be minimum of given points.");
     STAssertEqualsWithAccuracy(CGRectGetMaxX(boundingBox), (CGFloat)(kPointsPerTemplateNumber - 1), kEps,
-                               @"Max x should be maximum of given points.");
+                               @"Should have max x be maximum of given points.");
     STAssertEqualsWithAccuracy(CGRectGetMaxY(boundingBox), (CGFloat)(kPointsPerTemplateNumber - 1), kEps,
-                               @"Max y should be maximum of given points.");
+                               @"Should have max y  be maximum of given points.");
 }
 
 - (void) testDistanceBetweenPoints {
@@ -180,12 +272,7 @@ const CGFloat kEps = 0.001;
     STAssertEquals([scaledPoints count], kPointsPerTemplateNumber,
                    @"Should return the same number of points as given.");
 
-    CGRect boundingBox = [recognizer boundingBox: scaledPoints];
-
-    STAssertEqualsWithAccuracy(boundingBox.size.width, [self region].size.width, kEps,
-                               @"Bounding box of new points should be scaled to whole region");
-    STAssertEqualsWithAccuracy(boundingBox.size.height, [self region].size.height, kEps,
-                               @"Bounding box of new points should be scaled to whole region");
+    [self assertScaled: scaledPoints];
 }
 
 - (void) testTranslateTo {
@@ -196,12 +283,7 @@ const CGFloat kEps = 0.001;
     STAssertEquals([translatedPoints count], kPointsPerTemplateNumber,
                    @"Should return the same number of points as given.");
 
-    CGPoint center = [recognizer centroid: translatedPoints];
-
-    STAssertEqualsWithAccuracy(center.x, CGRectGetMidX([self region]), kEps,
-                               @"Centroid of new points should be translated to center of region");
-    STAssertEqualsWithAccuracy(center.y, CGRectGetMidY([self region]), kEps,
-                               @"Centroid of new points should be translated to center of region");
+    [self assertTranslated: translatedPoints];
 }
 
 - (void) testDistanceAtBestAngleSamePoints {

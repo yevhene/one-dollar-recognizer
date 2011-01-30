@@ -55,9 +55,12 @@
 - (id) initWithTemplates: (NSDictionary *)templates
                andRegion: (CGRect) region {
     if ((self = [self init])) {
-        // TODO: Resample templates
-        [_templates addEntriesFromDictionary: templates];
         _region = region;
+
+        for (NSString *templateName in templates) {
+            [self addTemplateWithName: templateName
+                            andPoints: [templates objectForKey: templateName]];
+        }
     }
     return self;
 }
@@ -100,7 +103,14 @@
 
 - (void)addTemplateWithName: (NSString *)name
                   andPoints: (NSArray *)points {
-    [_templates setObject: points
+    NSArray *newPoints = [self resample: points];
+    CGFloat angle = [self indicativeAngle: newPoints];
+    NSArray *transformedPoints =
+    	[self translate:
+         [self scale:
+          [self rotatePoints: newPoints byAngle: -angle]]];
+
+    [_templates setObject: transformedPoints
                    forKey: name];
 }
 
@@ -280,17 +290,26 @@
     CGFloat maxY = CGFLOAT_MIN;
     for (NSValue *value in points) {
         CGPoint point = [value CGPointValue];
-        if (point.x < minX)
-            minX = point.y;
-        if (point.x > maxX)
-            maxX = point.y;
-        if (point.y < minY)
+
+        if (point.x < minX) {
+            minX = point.x;
+        }
+
+        if (point.x > maxX) {
+            maxX = point.x;
+        }
+
+        if (point.y < minY) {
             minY = point.y;
-        if (point.y > maxY)
+        }
+
+        if (point.y > maxY) {
             maxY = point.y;
+        }
     }
-    CGRect boundingBox = CGRectMake(minX, minY, maxX - minX, maxY - minY);
-    return boundingBox;
+
+    return CGRectMake(minX, minY,
+                      fmax(maxX - minX, 1.0), fmax(maxY - minY, 1.0));
 }
 
 - (CGFloat) pathDistanceBetween: (NSArray *)points1
