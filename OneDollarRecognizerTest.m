@@ -177,10 +177,25 @@ const CGFloat kEps = 0.001;
 }
 
 - (void) testRecognize {
+    [self testInitWithTemplates];
+
     NSDictionary *recognizeResult = [recognizer recognize: [self points]];
     STAssertNotNil(recognizeResult,
                    @"Should return not nil recognition result.");
-    // TODO
+    STAssertEquals(kTemplatesNumber, [recognizer.templates count],
+                   @"Should return the same number of results as number of templates");
+
+    for (NSString *templateName in [recognizeResult allKeys]) {
+    	CGFloat score = [[recognizeResult objectForKey: templateName] doubleValue];
+        STAssertTrue(score >= 0.0,
+                     @"Should have score (%f) not less than zero", score);
+        STAssertTrue(score <= 1.0,
+                     @"Should have score (%f) not bigger than 1.0", score);
+
+        // Note, tolerance is high because of low precision of best rotation angle
+        STAssertEqualsWithAccuracy((CGFloat) 1.0, score, 0.1,
+                                   @"Should have near 1.0 score as is the same path");
+    }
 }
 
 - (void) testResample {

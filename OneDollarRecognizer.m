@@ -80,19 +80,19 @@
 - (NSDictionary *)recognize: (NSArray *)points {
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
 
-    NSArray *processedPoints = [self resample: points];
-    CGFloat angle = [self indicativeAngle: processedPoints];
-    processedPoints = [self rotatePoints: processedPoints
-                                 byAngle: -angle];
-    processedPoints = [self scale: processedPoints];
-    processedPoints = [self translate: processedPoints];
+    NSArray *newPoints = [self resample: points];
+    CGFloat angle = [self indicativeAngle: newPoints];
+    NSArray *transformedPoints =
+        [self translate:
+         [self scale:
+          [self rotatePoints: newPoints byAngle: -angle]]];
 
-    CGFloat halfDiagonal = sqrt(_region.size.width*_region.size.width  + _region.size.height*_region.size.height) / 2;
+    CGFloat halfDiagonal = sqrt(_region.size.width * _region.size.width  + _region.size.height * _region.size.height) / 2;
 
     for (NSString *templateName in _templates) {
-        CGFloat distance = [self distanceAtBestAngleFromPoints: points
+        CGFloat distance = [self distanceAtBestAngleFromPoints: transformedPoints
                                                       toPoints: [_templates objectForKey: templateName]];
-        double score = 1.0 - (distance / halfDiagonal);
+        double score = fmax(1.0 - (distance / halfDiagonal), 0.0);
 
         [result setObject: [NSNumber numberWithDouble: score]
                    forKey: templateName];
@@ -101,8 +101,8 @@
     return result;
 }
 
-- (void)addTemplateWithName: (NSString *)name
-                  andPoints: (NSArray *)points {
+- (void) addTemplateWithName: (NSString *)name
+                   andPoints: (NSArray *)points {
     NSArray *newPoints = [self resample: points];
     CGFloat angle = [self indicativeAngle: newPoints];
     NSArray *transformedPoints =
