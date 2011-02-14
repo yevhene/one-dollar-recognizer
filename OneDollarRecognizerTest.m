@@ -59,6 +59,20 @@ const CGFloat kEps = 0.001;
     return points;
 }
 
+- (NSArray *) translatedPoints {
+    NSMutableArray *translatedPoints = [[self points] mutableCopy];
+
+    // Translate all points so that they are at 1.0 distance
+    for (int i = 0; i < [translatedPoints count]; i++) {
+    	CGPoint point = [[translatedPoints objectAtIndex: i] CGPointValue];
+        CGPoint newPoint = CGPointMake(point.x + M_SQRT1_2, point.y + M_SQRT1_2);
+	[translatedPoints replaceObjectAtIndex: i
+                                    withObject: [NSValue valueWithCGPoint: newPoint]];
+    }
+
+    return translatedPoints;
+}
+
 - (NSDictionary *)templates {
     NSMutableDictionary *templates = [[NSMutableDictionary alloc] init];
     for (NSUInteger i = 0; i < kTemplatesNumber; ++i) {
@@ -272,11 +286,18 @@ const CGFloat kEps = 0.001;
                                @"Path length should be sum of the distances between points.");
 }
 
-- (void) testPathDistanceBetweenPoints {
+- (void) testPathDistanceBetweenPointsSamePoints {
     CGFloat pathDistance = [recognizer pathDistanceBetween: [self points]
                                                       and: [self points]];
     STAssertEqualsWithAccuracy(pathDistance, (CGFloat)0.0, kEps,
                                @"Distance between path and itself should be zero.");
+}
+
+- (void) testPathDistanceBetweenPointsTranslatedPoints {
+    CGFloat pathDistance = [recognizer pathDistanceBetween: [self points]
+                                                       and: [self translatedPoints]];
+    STAssertEqualsWithAccuracy(pathDistance, (CGFloat) 1.0, kEps,
+                               @"Should return the distance on which points were translated");
 }
 
 - (void) testScaleTo {
@@ -310,20 +331,10 @@ const CGFloat kEps = 0.001;
 }
 
 - (void) testDistanceAtBestAngleSamePointsTranslated {
-    NSMutableArray *translatedPoints = [[self points] mutableCopy];
-    for (int i = 0; i < [translatedPoints count]; i++) {
-        NSValue *value = [translatedPoints objectAtIndex: i];
-        CGPoint point = [value CGPointValue];
-        [translatedPoints replaceObjectAtIndex: i
-                                    withObject:
-         [NSValue valueWithCGPoint:
-          CGPointMake(point.x - M_SQRT1_2, point.y - M_SQRT1_2)]];
-    }
-
     CGFloat distance = [recognizer distanceAtBestAngleFromPoints: [self points]
-                                                        toPoints: translatedPoints];
-    STAssertEqualsWithAccuracy(distance, (CGFloat) 1.0 * kPointsPerTemplateNumber, kEps,
-                               @"Distance between path and translated one should be 1.0 multiplied by number of points");
+                                                        toPoints: [self translatedPoints]];
+    STAssertEqualsWithAccuracy(distance, (CGFloat) 1.0, kEps,
+                               @"Should return the distance on which points were translated");
 }
 
 - (void) testDistanceWithAngleSamePoints {
@@ -331,7 +342,7 @@ const CGFloat kEps = 0.001;
                                      toTemplatePoints: [self points]
                                             withAngle: 0.0];
     STAssertEqualsWithAccuracy(distance, (CGFloat) 0.0, kEps,
-                               @"Distance between path and itself should be zero.");
+                               @"Should return zero distance between path and itself.");
 }
 
 - (void) testDistanceWithAngleSamePointsNonZeroAngle {
@@ -339,9 +350,11 @@ const CGFloat kEps = 0.001;
                                      toTemplatePoints: [self points]
                                             withAngle: M_PI / 2];
     // Following assumes sin(PI/4) = sqrt(1/2), i.e. the same as distance between two test points
-    CGFloat expectedDistance = (kPointsPerTemplateNumber / 2 * (kPointsPerTemplateNumber / 2 + 1)) * 2;
+    // It also uses the sum of arithmetic progression from 1 to kPointsPerTemplateNumber / 2
+    int numTerms = kPointsPerTemplateNumber / 2;
+    CGFloat expectedDistance = numTerms * (numTerms + 1) * 2.0 / kPointsPerTemplateNumber;
     STAssertEqualsWithAccuracy(expectedDistance, distance, kEps,
-                               @"Distance between path and itself at given angle should be as calculated");
+                               @"Should return distance as calculated for rotation on given angle");
 }
 
 

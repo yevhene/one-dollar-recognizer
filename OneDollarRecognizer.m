@@ -321,7 +321,7 @@
         pathDistance += [self distanceBetween: point1
                                           and: point2];
     }
-    return pathDistance;
+    return pathDistance / [points1 count];
 }
 
 - (CGFloat) pathLength: (NSArray *)points {
